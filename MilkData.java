@@ -7,10 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -27,7 +25,7 @@ import java.util.TreeMap;
  * Version:		2019-12 (4.14.0)
  * Build id:	20191212-1212
  *
- * Device:		Wenxi's MacBook Pro
+ * Device:		Wenxi’s MacBook Pro
  * OS:			MacOS Mojave
  * Version:		10.14.4
  * OS Build: 	18E226
@@ -50,14 +48,13 @@ public class MilkData {
 
 	// first key is month, second key is farmID, third key is date
 	private TreeMap<String, TreeMap<String, TreeMap<String, Integer>>> milkMap = new TreeMap<>();
-
 	private String csvDir;
 
 	/**
 	 * Gets the milkMap.
 	 * 
 	 * @return the milk map TreeMap<month(year-month), TreeMap<farmID,
-	 *         TreeMap<date(year-month-day), milk weight>>>
+	 *         				TreeMap<date(year-month-day), milk weight>>>
 	 */
 	public TreeMap<String, TreeMap<String, TreeMap<String, Integer>>> getMilkMap() {
 		return milkMap;
@@ -71,10 +68,8 @@ public class MilkData {
 	 * @param csvDir the csv dir
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public List<File> readMilkData(String csvDir) throws IOException {
-		milkMap.clear();
+	public void readMilkData(String csvDir) throws IOException {
 		this.csvDir = csvDir;
-		ArrayList<File> flist = new ArrayList<File>();
 		File file = new File(csvDir);
 		File[] fileList = file.listFiles();
 		for (File fileObj : fileList) {
@@ -82,12 +77,10 @@ public class MilkData {
 			if (fileName.toLowerCase().endsWith(".csv")) {
 				String year_month = fileName.substring(0, fileName.length() - 4);
 				readTextFile(year_month, fileObj);
-				flist.add(fileObj);
 			} else {
 				System.err.println("Error file: " + fileObj.getName());
 			}
 		}
-		return flist;
 	}
 
 	private void readTextFile(String month, File csvFile) throws IOException {
@@ -183,68 +176,5 @@ public class MilkData {
 				fos.close();
 			}
 		}
-	}
-
-	// TreeMap<month(year-month), TreeMap<farmID, TreeMap<date(year-month-day), milk
-	// weight>>>
-	public List<MilkItem> getDataByDay(String day) {
-		List<MilkItem> list = new ArrayList<>();
-		String month = day.substring(0, day.lastIndexOf("-"));
-		TreeMap<String, TreeMap<String, Integer>> monthMap = this.milkMap.get(month);
-		if(monthMap == null) {
-			return list;
-		}
-		// TreeMap<farmID, TreeMap<date(year-month-day), milk weight>>
-		for (Map.Entry<String, TreeMap<String, Integer>> farmEntry : monthMap.entrySet()) {
-			for (Map.Entry<String, Integer> dayEntry : farmEntry.getValue().entrySet()) {
-				if (dayEntry.getKey().equals(day)) {
-					list.add(new MilkItem(day, farmEntry.getKey(), dayEntry.getValue()));
-				}
-			}
-		}
-		return list;
-	}
-
-	public List<MilkItem> getDataByMonth(String month) {
-		List<MilkItem> list = new ArrayList<>();
-		TreeMap<String, TreeMap<String, Integer>> monthMap = this.milkMap.get(month);
-		if(monthMap == null) {
-			return list;
-		}
-		// TreeMap<farmID, TreeMap<date(year-month-day), milk weight>>
-		for (Map.Entry<String, TreeMap<String, Integer>> farmEntry : monthMap.entrySet()) {
-			for (Map.Entry<String, Integer> dayEntry : farmEntry.getValue().entrySet()) {
-				list.add(new MilkItem(dayEntry.getKey(), farmEntry.getKey(), dayEntry.getValue()));
-			}
-		}
-		return list;
-	}
-
-	// TreeMap<month(year-month), TreeMap<farmID, TreeMap<date(year-month-day), milk
-	// weight>>>
-	public List<MilkItem> getAllData() {
-		List<MilkItem> list = new ArrayList<>();
-		for (Map.Entry<String, TreeMap<String, TreeMap<String, Integer>>> monthEntry : this.milkMap.entrySet()) {
-			for (Map.Entry<String, TreeMap<String, Integer>> farmEntry : monthEntry.getValue().entrySet()) {
-				for (Map.Entry<String, Integer> dayEntry : farmEntry.getValue().entrySet()) {
-					list.add(new MilkItem(dayEntry.getKey(), farmEntry.getKey(), dayEntry.getValue()));
-				}
-			}
-		}
-		return list;
-	}
-
-	public Set<String> getFarmIDList() {
-		Set<String> list = new HashSet<>();
-		for (Map.Entry<String, TreeMap<String, TreeMap<String, Integer>>> monthEntry : this.milkMap.entrySet()) {
-			list.addAll(monthEntry.getValue().keySet());
-		}
-		return list;
-	}
-
-	// TreeMap<month(year-month), TreeMap<farmID, TreeMap<date(year-month-day), milk
-	// weight>>>
-	public Set<String> getMonths() {
-		return this.milkMap.keySet();
 	}
 }

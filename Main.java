@@ -12,7 +12,7 @@
  * Version:		2019-12 (4.14.0)
  * Build id:	20191212-1212
  *
- * Device:		Wenxi's MacBook Pro
+ * Device:		Wenxi’s MacBook Pro
  * OS:			MacOS Mojave
  * Version:		10.14.4
  * OS Build: 	18E226
@@ -54,8 +54,6 @@ import javafx.scene.text.Text;
  * The Class Main.
  */
 public class Main extends Application {
-  
-  public static MilkData milkData = new MilkData();
 
 	/**
 	 * Start the program.
@@ -99,7 +97,6 @@ public class Main extends Application {
 		topPane.setPrefHeight(180);
 		root.setTop(topPane);
 		Button bt_dataManager = new Button("Data Manager");
-		bt_dataManager.setId("blue_button");
 		bt_dataManager.setPrefWidth(200);
 		Insets insets = new Insets(15);
 
@@ -112,7 +109,7 @@ public class Main extends Application {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				Pane centerPane = DataManagerPane.getDataManagerPane(milkData);
+				Pane centerPane = DataManagerPane.getDataManagerPane();
 				root.setCenter(centerPane);
 				BorderPane.setMargin(centerPane, insets);
 			}
@@ -120,7 +117,7 @@ public class Main extends Application {
 
 		Button bt_userFun = new Button("User Functions");
 		bt_userFun.setPrefWidth(200);
-		bt_userFun.setId("blue_button");
+
 		bt_userFun.setOnAction(new EventHandler<ActionEvent>() {
 
 			/**
@@ -138,7 +135,7 @@ public class Main extends Application {
 
 		Button bt_desc = new Button("Description");
 		bt_desc.setPrefWidth(200);
-		bt_desc.setId("blue_button");
+
 		bt_desc.setOnAction(new EventHandler<ActionEvent>() {
 
 			/**
