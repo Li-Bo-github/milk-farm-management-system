@@ -37,7 +37,7 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
 
   private TextField year;
 
-  private final ObservableList<Data> data = FXCollections.observableArrayList();
+  private final ObservableList<MilkItem> datalist = FXCollections.observableArrayList();
 
   /**
    * Instantiates a new date range handler.
@@ -54,6 +54,11 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
 
   @Override
   public void handle(ActionEvent arg0) {
+
+    MilkData data = new MilkData();
+
+    data.
+
     // TODO Auto-generated method stub
     // retrieve data
     String farmid = id.getText().toString();
@@ -79,92 +84,13 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
     col3.setPrefWidth(250);
     col3.setCellValueFactory(new PropertyValueFactory<>("percentage"));
 
-    table.setItems(data);
+    table.setItems(datalist);
     table.getColumns().addAll(col1, col2, col3);
 
 
-    root.setBottom(table);
+    root.getChildren().add(table);
 
   }
 
-  /**
-   * The Class Data.
-   */
-  public static class Data {
-
-    /** The Date. */
-    private final SimpleStringProperty Year;
-
-    /** The Farm ID. */
-    private final SimpleStringProperty FarmID;
-
-    /** The Percentage. */
-    private final SimpleStringProperty Percentage;
-
-    /**
-     * Instantiates new data.
-     *
-     */
-    private Data(String year, String farmID, String percentage) {
-      this.Year = new SimpleStringProperty(year);
-      this.FarmID = new SimpleStringProperty(farmID);
-      this.Percentage = new SimpleStringProperty(percentage);
-
-    }
-
-    /**
-     * Gets the date.
-     *
-     * @return the date
-     */
-    public String getDate() {
-      return Year.get();
-    }
-
-    /**
-     * Sets the date.
-     *
-     * @param date the new date
-     */
-    public void setDate(String date) {
-      Year.set(date);
-    }
-
-    /**
-     * Gets the farm ID.
-     *
-     * @return the farm ID
-     */
-    public String getFarmID() {
-      return FarmID.get();
-    }
-
-    /**
-     * Sets the farm ID.
-     *
-     * @param farmID the new farm ID
-     */
-    public void setFarmID(String farmID) {
-      Year.set(farmID);
-    }
-
-    /**
-     * Gets the percentage.
-     *
-     * @return the percentage
-     */
-    public String getPercentage() {
-      return Percentage.get();
-    }
-
-    /**
-     * Sets the percentage.
-     *
-     * @param percentage the new percentage
-     */
-    public void setPercentage(String percentage) {
-      Year.set(percentage);
-    }
-  }
 
 }

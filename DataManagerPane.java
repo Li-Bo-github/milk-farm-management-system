@@ -39,7 +39,7 @@ public class DataManagerPane {
 
   /** The pane. */
   private static GridPane pane;
-
+  public static String dir = null;
   /**
    * Gets the user function pane.
    *
@@ -59,18 +59,7 @@ public class DataManagerPane {
       Stage fileStage = new Stage();
       hyperlink.setOnAction((final ActionEvent e) -> {
         File file = folderChooser.showDialog(fileStage);
-        String dir = file.getAbsolutePath();
-
-        MilkData readData = new MilkData();
-        try {
-          readData.readMilkData(dir);
-          //不太清楚milkdata
-          
-          
-        } catch (IOException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-        }
+        dir = file.getAbsolutePath();
       });
 
     }
