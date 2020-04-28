@@ -1,21 +1,17 @@
 /**
  * Main.java created by Bo
  *
- * Author: Bo Li (bli379@wisc.edu) 
- * Date: 4/21/2020
+ * Author: Bo Li (bli379@wisc.edu) Date: 4/21/2020
  *
  * 
- * Course: CS400 
- * Semester: Spring 2020 
- * Lecture: 001
+ * Course: CS400 Semester: Spring 2020 Lecture: 001
  * 
- * IDE: Eclipse IDE For Java Developers 
- * Version: 291942 (4.14.0)
+ * IDE: Eclipse IDE For Java Developers Version: 291942 (4.14.0)
  */
 
 
 /**
- * Main 
+ * Main
  * 
  * @author Bo
  *
@@ -48,7 +44,7 @@ import javafx.stage.Stage;
 public class FarmReport extends Application {
   // store any command-line arguments that were entered.
   // NOTE: this.getParameters().getRaw() will get these also
-  //private List<String> args;
+  // private List<String> args;
 
   private static final int WINDOW_WIDTH = 840;
   private static final int WINDOW_HEIGHT = 600;
@@ -57,7 +53,7 @@ public class FarmReport extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     // save args example
-    //args = this.getParameters().getRaw();
+    // args = this.getParameters().getRaw();
 
     // title
     Label title = new Label("Farm Report");
@@ -79,7 +75,7 @@ public class FarmReport extends Application {
     TextField year = new TextField();
     farmid.setPromptText("Type ID here");
     year.setPromptText("Type Year here");
- 
+
     farmid.setMaxWidth(300);
     year.setMaxWidth(300);
 
@@ -108,6 +104,12 @@ public class FarmReport extends Application {
 
 
     Button confirm = new Button("Confirm");
+
+    // Handler
+    FarmReportHandler handler = new FarmReportHandler(confirm, vbox, farmid, year);
+
+    // register event handler for button
+    confirm.setOnAction(handler);
 
     // action
     ObservableList<Milk> data = FXCollections.observableArrayList();
