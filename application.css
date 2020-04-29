@@ -1,5 +1,5 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
-.button{
+#blue_button{
     -fx-font-size: 16pt;
     -fx-text-fill: black;
     -fx-background-color: #00b3ff;
@@ -8,15 +8,15 @@
     -fx-padding: 5;
 }
 
-.button:hover {
+#blue_button:hover {
     -fx-background-color: grey;
 }
 
-.button:pressed, .button:default:hover:pressed {
+#blue_button:pressed, .button:default:hover:pressed {
   -fx-background-color: grey;
 }
 
-.button:default {
+#blue_button:default {
     -fx-background-color: -fx-focus-color;
     -fx-text-fill: #ffffff;
 }

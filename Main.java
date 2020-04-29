@@ -1,3 +1,4 @@
+
 /**
  * Main.java created by wenxiyang on MacBook Pro in a2
  *
@@ -12,7 +13,7 @@
  * Version:		2019-12 (4.14.0)
  * Build id:	20191212-1212
  *
- * Device:		Wenxi’s MacBook Pro
+ * Device:		Wenxi's MacBook Pro
  * OS:			MacOS Mojave
  * Version:		10.14.4
  * OS Build: 	18E226
@@ -55,6 +56,9 @@ import javafx.scene.text.Text;
  */
 public class Main extends Application {
 
+	/** The milk data. */
+	public static MilkData milkData = new MilkData();
+
 	/**
 	 * Start the program.
 	 *
@@ -63,6 +67,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			EventLog.getInstance().log("Start Milk Manager.");
 			primaryStage.setTitle("Milk Manager");
 			BorderPane root = createMainPane(primaryStage);
 			Scene scene = new Scene(root, 840, 600);
@@ -73,6 +78,17 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+     * This method is called when the application should stop, and provides a
+     * convenient place to prepare for application exit and destroy resources.
+     *
+     * @throws java.lang.Exception if something goes wrong
+     */
+    public void stop() throws Exception {
+    	EventLog.getInstance().log("Exit Milk Manager.");
+    	EventLog.getInstance().close();
+    }
 
 	/**
 	 * Creates the main pane.
@@ -97,6 +113,7 @@ public class Main extends Application {
 		topPane.setPrefHeight(180);
 		root.setTop(topPane);
 		Button bt_dataManager = new Button("Data Manager");
+		bt_dataManager.setId("blue_button");
 		bt_dataManager.setPrefWidth(200);
 		Insets insets = new Insets(15);
 
@@ -109,7 +126,7 @@ public class Main extends Application {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				Pane centerPane = DataManagerPane.getDataManagerPane();
+				Pane centerPane = DataManagerPane.getDataManagerPane(milkData);
 				root.setCenter(centerPane);
 				BorderPane.setMargin(centerPane, insets);
 			}
@@ -117,7 +134,7 @@ public class Main extends Application {
 
 		Button bt_userFun = new Button("User Functions");
 		bt_userFun.setPrefWidth(200);
-
+		bt_userFun.setId("blue_button");
 		bt_userFun.setOnAction(new EventHandler<ActionEvent>() {
 
 			/**
@@ -135,7 +152,7 @@ public class Main extends Application {
 
 		Button bt_desc = new Button("Description");
 		bt_desc.setPrefWidth(200);
-
+		bt_desc.setId("blue_button");
 		bt_desc.setOnAction(new EventHandler<ActionEvent>() {
 
 			/**

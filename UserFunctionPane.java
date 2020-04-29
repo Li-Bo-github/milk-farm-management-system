@@ -1,3 +1,4 @@
+
 /**
  * UserFunctionPane.java created by wenxiyang on MacBook Pro in a2
  *
@@ -12,7 +13,7 @@
  * Version:		2019-12 (4.14.0)
  * Build id:	20191212-1212
  *
- * Device:		Wenxi’s MacBook Pro
+ * Device:		Wenxi's MacBook Pro
  * OS:			MacOS Mojave
  * Version:		10.14.4
  * OS Build: 	18E226
@@ -110,6 +111,13 @@ public class UserFunctionPane {
 						System.out.println("call Annual Report");
 					} else if (selectedRadioButton.equals(rbtMonthRpt)) {
 						System.out.println("call Monthly Report");
+						MonthlyReport monthR = new MonthlyReport();
+						Stage d2Stage = new Stage();
+						try {
+							monthR.start(d2Stage);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					} else {
 						System.out.println("call Date Range Report");
 						DateRangeReport dateR = new DateRangeReport();
