@@ -80,28 +80,6 @@ public class FarmReport extends Application {
     year.setMaxWidth(300);
 
 
-    // create a table
-    TableView<Milk> table = new TableView<>();
-
-
-    // build the month column
-    TableColumn month = new TableColumn("Month");
-    month.setMinWidth(100);
-    month.setCellValueFactory(new PropertyValueFactory<>("month"));
-
-    // build the total weight column
-    TableColumn totalWeight = new TableColumn("Total Weight");
-    totalWeight.setMinWidth(100);
-    totalWeight.setCellValueFactory(new PropertyValueFactory<>("totalWeight"));
-
-    // build the percentage column
-    TableColumn percentage = new TableColumn("Percent of Total Weight");
-    percentage.setMinWidth(300);
-    percentage.setCellValueFactory(new PropertyValueFactory<>("percentage"));
-
-    // add to table
-    table.getColumns().addAll(month, totalWeight, percentage);
-
 
     Button confirm = new Button("Confirm");
 
@@ -111,17 +89,13 @@ public class FarmReport extends Application {
     // register event handler for button
     confirm.setOnAction(handler);
 
-    // action
-    ObservableList<Milk> data = FXCollections.observableArrayList();
-    confirm.addEventHandler(ActionEvent.ACTION, (e) -> table.setItems(data));
-
     // add to hbox
     hbox1.getChildren().addAll(prompt1, farmid);
     hbox2.getChildren().addAll(prompt2, year, confirm);
 
 
     vbox.setPadding(new Insets(10, 0, 0, 10));
-    vbox.getChildren().addAll(title, hbox1, hbox2, table);
+    vbox.getChildren().addAll(title, hbox1, hbox2);
 
     Scene mainScene = new Scene(vbox, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -137,18 +111,18 @@ public class FarmReport extends Application {
 
   public static class Milk {
 
-    private final SimpleStringProperty farmID;
+    private final SimpleStringProperty month;
     private final SimpleIntegerProperty weight;
     private final SimpleDoubleProperty percentage;
 
-    private Milk(String farmID, Integer weight, Double percentage) {
-      this.farmID = new SimpleStringProperty(farmID);
+    Milk(String month, Integer weight, Double percentage) {
+      this.month = new SimpleStringProperty(month);
       this.weight = new SimpleIntegerProperty(weight);
       this.percentage = new SimpleDoubleProperty(percentage);
     }
 
     public String getFarmID() {
-      return farmID.get();
+      return month.get();
     }
 
 

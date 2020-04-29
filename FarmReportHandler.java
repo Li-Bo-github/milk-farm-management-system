@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,15 +58,53 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
 
   @Override
   public void handle(ActionEvent arg0) {
-
-    MilkData data = new MilkData();
-
-    data.
-
     // TODO Auto-generated method stub
     // retrieve data
     String farmid = id.getText().toString();
     String farmyear = year.getText().toString();
+
+    MilkData data = new MilkData();
+
+    ObservableList<FarmReport.Milk> tableitems = FXCollections.observableArrayList();
+
+    try {
+      data.readMilkData(DataManagerPane.dir);
+      Set<String> months = data.getMonths();
+
+      for (String month : months) {
+        // check year
+        String[] arrOfStr = month.split("-", 2);
+        if (arrOfStr[0].equals(year)) {
+          List<MilkItem> itemlist = data.getDataByMonth(month);
+
+          int totalofall = 0;
+          int totaloffarm = 0;
+
+          // find id
+          for (MilkItem item : itemlist) {
+            totalofall += item.getWeight();
+
+            if (item.getFarmID().equals(id)) {
+              totaloffarm += item.getWeight();
+            }
+          }
+
+          // find percentage
+          double percent = totaloffarm / totalofall;
+
+          // add to table
+          FarmReport.Milk tableitem = new FarmReport.Milk(arrOfStr[1], totaloffarm, percent);
+          tableitems.add(tableitem);
+        }
+
+      }
+
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+
 
     // add table
     TableView table = new TableView<>();
@@ -87,7 +129,7 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
     table.setItems(datalist);
     table.getColumns().addAll(col1, col2, col3);
 
-
+    table.setItems(tableitems);
     root.getChildren().add(table);
 
   }
