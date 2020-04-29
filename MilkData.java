@@ -335,10 +335,9 @@ public class MilkData {
 	 *
 	 * @param startDate the start date
 	 * @param endDate   the end date
-	 * @return the data
+	 * @return the total weight
 	 */
-	public List<DataRangeItem> getDataByTimeRange(String startDate, String endDate) {
-		List<DataRangeItem> list = new ArrayList<>();
+	public int getDataByTimeRange(String startDate, String endDate, List<DataRangeItem> list) {
 		MilkComparator milkComparator = new MilkComparator();
 		int sum = 0;
 		for (Map.Entry<String, TreeMap<String, TreeMap<String, Integer>>> monthEntry : this.milkMap.entrySet()) {
@@ -357,6 +356,6 @@ public class MilkData {
 			item.setPercent((int)(percentage * 1000));
 		}
 		Collections.sort(list);
-		return list;
+		return sum;
 	}
 }

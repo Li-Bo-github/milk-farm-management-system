@@ -200,7 +200,8 @@ public class DateRangeReport extends Application {
 		public void handle(ActionEvent arg0) {
 			LocalDate startDate = startPicker.getValue();
 			LocalDate endDate = endPicker.getValue();
-			List<DataRangeItem> list = milkData.getDataByTimeRange(CommonMilkTool.formatDate(startDate), CommonMilkTool.formatDate(endDate));
+			List<DataRangeItem> list = new ArrayList<>();
+			int sum = milkData.getDataByTimeRange(CommonMilkTool.formatDate(startDate), CommonMilkTool.formatDate(endDate), list);
 			table.getItems().clear();
 			table.getItems().addAll(list);
 		}
