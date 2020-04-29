@@ -329,4 +329,34 @@ public class MilkData {
 	public Set<String> getMonths() {
 		return this.milkMap.keySet();
 	}
+
+	/**
+	 * Gets the data for data range report.
+	 *
+	 * @param startDate the start date
+	 * @param endDate   the end date
+	 * @return the data
+	 */
+	public List<DataRangeItem> getDataByTimeRange(String startDate, String endDate) {
+		List<DataRangeItem> list = new ArrayList<>();
+		MilkComparator milkComparator = new MilkComparator();
+		int sum = 0;
+		for (Map.Entry<String, TreeMap<String, TreeMap<String, Integer>>> monthEntry : this.milkMap.entrySet()) {
+			for (Map.Entry<String, TreeMap<String, Integer>> farmEntry : monthEntry.getValue().entrySet()) {
+				for (Map.Entry<String, Integer> dayEntry : farmEntry.getValue().entrySet()) {
+					if (milkComparator.compare(startDate, dayEntry.getKey()) <= 0
+							&& milkComparator.compare(endDate, dayEntry.getKey()) >= 0) {
+						list.add(new DataRangeItem(dayEntry.getKey(), farmEntry.getKey(), dayEntry.getValue(), 0));
+						sum += dayEntry.getValue();
+					}
+				}
+			}
+		}
+		for (DataRangeItem item : list) {
+			double percentage = ((item.getWeight() * 0.1) / sum);
+			item.setPercent((int)(percentage * 1000));
+		}
+		Collections.sort(list);
+		return list;
+	}
 }
