@@ -57,15 +57,18 @@ public class EventLog {
 	 * Instantiates a EventLog object.
 	 *
 	 * @return single instance of EventLog
-	 * @throws FileNotFoundException if file is not founded
 	 */
-	public static EventLog getInstance() throws FileNotFoundException {
+	public static EventLog getInstance() {
 		if (instance == null) {
 			instance = new EventLog();
 			String logName = CommonMilkTool.formatDate(LocalDate.now()) + "_eventLog.log";
 			File file = new File(logName);
 			// append the log
-			fos = new FileOutputStream(file, true);
+			try {
+				fos = new FileOutputStream(file, true);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 
 		}
 		return instance;
@@ -75,13 +78,16 @@ public class EventLog {
 	 * Write log.
 	 *
 	 * @param logContent the log content
-	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public void log(String logContent) throws IOException {
-		fos.write((new Date()).toString().getBytes("UTF-8"));
-		fos.write(", ".getBytes("UTF-8"));
-		fos.write(logContent.getBytes("UTF-8"));
-		fos.write("\n".getBytes("UTF-8"));
+	public void log(String logContent) {
+		try {
+			fos.write((new Date()).toString().getBytes("UTF-8"));
+			fos.write(", ".getBytes("UTF-8"));
+			fos.write(logContent.getBytes("UTF-8"));
+			fos.write("\n".getBytes("UTF-8"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
