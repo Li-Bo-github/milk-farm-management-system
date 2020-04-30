@@ -49,7 +49,7 @@ public class UserFunctionPane {
 	 *
 	 * @return the user function pane
 	 */
-	public static GridPane getUserFunctionPane(Stage stage) {
+	public static GridPane getUserFunctionPane(Stage stage, MilkData milkData) {
 		if (pane == null) {
 			pane = new GridPane();
 			pane.setPadding(new Insets(10, 10, 10, 60));
@@ -120,7 +120,7 @@ public class UserFunctionPane {
 						}
 					} else {
 						System.out.println("call Date Range Report");
-						DateRangeReport dateR = new DateRangeReport();
+						DateRangeReport dateR = new DateRangeReport(milkData);
 						Stage d2Stage = new Stage();
 						try {
 							dateR.start(d2Stage);

@@ -144,7 +144,7 @@ public class Main extends Application {
 			 */
 			@Override
 			public void handle(ActionEvent event) {
-				Pane centerPane = UserFunctionPane.getUserFunctionPane(primaryStage);
+				Pane centerPane = UserFunctionPane.getUserFunctionPane(primaryStage, milkData);
 				root.setCenter(centerPane);
 				BorderPane.setMargin(centerPane, insets);
 			}
