@@ -33,23 +33,26 @@ import javafx.scene.layout.VBox;
  */
 public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent> {
 
-  private Button button;
+  private MilkData milkData;
 
   private VBox root;
 
   private TextField id;
 
   private TextField year;
+  
 
-  private final ObservableList<MilkItem> datalist = FXCollections.observableArrayList();
+  private ObservableList<FarmReport.Milk> tableitems =
+      FXCollections.observableArrayList(new FarmReport.Milk();
+
 
   /**
    * Instantiates a new date range handler.
    *
    * 
    */
-  public FarmReportHandler(Button c, VBox root, TextField id, TextField year) {
-    button = c;
+  public FarmReportHandler(MilkData milkData, VBox root, TextField id, TextField year) {
+    this.milkData = milkData;
     this.root = root;
     this.id = id;
     this.year = year;
@@ -63,45 +66,36 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
     String farmid = id.getText().toString();
     String farmyear = year.getText().toString();
 
-    MilkData data = new MilkData();
 
-    ObservableList<FarmReport.Milk> tableitems = FXCollections.observableArrayList();
+    Set<String> months = milkData.getMonths();
 
-    try {
-      data.readMilkData(DataManagerPane.dir);
-      Set<String> months = data.getMonths();
+    for (String month : months) {
+      // check year
+      String[] arrOfStr = month.split("-", 2);
+      if (arrOfStr[0].equals(year)) {
+        List<MilkItem> itemlist = milkData.getDataByMonth(month);
 
-      for (String month : months) {
-        // check year
-        String[] arrOfStr = month.split("-", 2);
-        if (arrOfStr[0].equals(year)) {
-          List<MilkItem> itemlist = data.getDataByMonth(month);
+        int totalofall = 0;
+        int totaloffarm = 0;
 
-          int totalofall = 0;
-          int totaloffarm = 0;
+        // find id
+        for (MilkItem item : itemlist) {
+          totalofall += item.getWeight();
 
-          // find id
-          for (MilkItem item : itemlist) {
-            totalofall += item.getWeight();
-
-            if (item.getFarmID().equals(id)) {
-              totaloffarm += item.getWeight();
-            }
+          if (item.getFarmID().equals(id)) {
+            totaloffarm += item.getWeight();
           }
-
-          // find percentage
-          double percent = totaloffarm / totalofall;
-
-          // add to table
-          FarmReport.Milk tableitem = new FarmReport.Milk(arrOfStr[1], totaloffarm, percent);
-          tableitems.add(tableitem);
         }
 
+        // find percentage
+        double percent = totaloffarm / totalofall;
+
+        // add to table
+        FarmReport.Milk tableitem =
+            new FarmReport.Milk(arrOfStr[1], (Integer) totaloffarm, (Double) percent);
+        tableitems.add(tableitem);
       }
 
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
     }
 
 
@@ -111,25 +105,25 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
     table.setEditable(true);
 
     // 1
-    TableColumn col1 = new TableColumn<>("Month");
+    TableColumn<FarmReport.Milk, String> col1 = new TableColumn<>("Month");
     col1.setPrefWidth(250);
-    col1.setCellValueFactory(new PropertyValueFactory<>("month"));
+    col1.setCellValueFactory(new PropertyValueFactory<FarmReport.Milk, String>("month"));
 
     // 2
-    TableColumn col2 = new TableColumn<>("Farm ID");
+    TableColumn<FarmReport.Milk, Integer> col2 = new TableColumn<>("Weight");
     col2.setPrefWidth(250);
-    col2.setCellValueFactory(new PropertyValueFactory<>("farmID"));
+    col2.setCellValueFactory(new PropertyValueFactory<FarmReport.Milk, Integer>("weight"));
 
 
     // 3
-    TableColumn col3 = new TableColumn<>("Percent of Total Weight of All Farms");
+    TableColumn<FarmReport.Milk, Double> col3 =
+        new TableColumn<>("Percent of Total Weight of All Farms");
     col3.setPrefWidth(250);
-    col3.setCellValueFactory(new PropertyValueFactory<>("percentage"));
-
-    table.setItems(datalist);
-    table.getColumns().addAll(col1, col2, col3);
+    col3.setCellValueFactory(new PropertyValueFactory<FarmReport.Milk, Double>("percentage"));
 
     table.setItems(tableitems);
+    table.getColumns().addAll(col1, col2, col3);
+
     root.getChildren().add(table);
 
   }

@@ -1,4 +1,3 @@
-
 /**
  * UserFunctionPane.java created by wenxiyang on MacBook Pro in a2
  *
@@ -97,7 +96,7 @@ public class UserFunctionPane {
 					RadioButton selectedRadioButton = (RadioButton) radioGroup.getSelectedToggle();
 					if (selectedRadioButton.equals(rbtFarmRpt)) {
 						System.out.println("call Farm Report");
-						FarmReport farmR = new FarmReport();
+						FarmReport farmR = new FarmReport(milkData);
 						Stage d2Stage = new Stage();
 						try {
 							farmR.start(d2Stage);

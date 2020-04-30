@@ -49,6 +49,14 @@ public class FarmReport extends Application {
   private static final int WINDOW_WIDTH = 840;
   private static final int WINDOW_HEIGHT = 600;
   private static final String APP_TITLE = "Farm Report";
+  MilkData milkData;
+
+  /**
+   * @param milkData
+   */
+  public FarmReport(MilkData milkData) {
+    this.milkData = milkData;
+  }
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -84,7 +92,7 @@ public class FarmReport extends Application {
     Button confirm = new Button("Confirm");
 
     // Handler
-    FarmReportHandler handler = new FarmReportHandler(confirm, vbox, farmid, year);
+    FarmReportHandler handler = new FarmReportHandler(milkData, vbox, farmid, year);
 
     // register event handler for button
     confirm.setOnAction(handler);
@@ -121,7 +129,7 @@ public class FarmReport extends Application {
       this.percentage = new SimpleDoubleProperty(percentage);
     }
 
-    public String getFarmID() {
+    public String getMonth() {
       return month.get();
     }
 
