@@ -200,6 +200,7 @@ public class RawDataPane {
 				if (!milkData.checkData(dateStr, farmStr)) {
 					milkData.addData(dateStr, farmStr, weightInt);
 					tableView.getItems().add(new MilkItem(dateStr, farmStr, weightInt));
+					EventLog.getInstance().log("Add Data: " + farmStr + ", " + dateStr);
 				} else {
 					new Alert(Alert.AlertType.NONE, "Date and Farm ID exist", new ButtonType[] { ButtonType.CLOSE })
 							.show();
@@ -215,6 +216,7 @@ public class RawDataPane {
 			public void handle(ActionEvent event) {
 				MilkItem item = tableView.getItems().remove(tableView.getSelectionModel().getSelectedIndex());
 				milkData.removeData(item.getDate(), item.getFarmID());
+				EventLog.getInstance().log("Delete Data: " + item.getFarmID() + ", " + item.getDate());
 			}
 		});
 		Button bt_save = new Button("Save");
@@ -225,6 +227,7 @@ public class RawDataPane {
 			public void handle(ActionEvent event) {
 				try {
 					milkData.writeMilkData();
+					EventLog.getInstance().log("Save Data");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
