@@ -1,0 +1,15 @@
+Instructions:
+1. Click on Data Manager button for import file folder from local computer
+2. Then click on User Functions button to chose four different report:
+	a) Farm report:
+		input farm id and year and click confirm button, 
+		display the total milk weight and percent of the total of all farm for each month
+	b) Anual report:
+		input year and click confirm button, 
+		display list of total weight and percent of total weight of all farms by farm for the year
+	c) Monthly report:
+		input year and month
+		display a list of totals and percent of total by farm
+	d) Date Range report:
+		input start date (year-month-day) and end month-day
+		display the total milk weight per farm and the percentage of the total for each farm over that date range.
