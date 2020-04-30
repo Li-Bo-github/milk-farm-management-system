@@ -128,6 +128,11 @@ public class DataManagerPane {
 						e1.printStackTrace();
 					}
 				}
+				try {
+					EventLog.getInstance().log("Read files from " + csvDir.getAbsolutePath() + ".");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			});
 
 		}
