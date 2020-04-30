@@ -79,15 +79,7 @@ public class AnnualReport extends Application {
         
         
       //create a table to show the annual report
-        TableView<Milk> table = new TableView<>();
-        ObservableList<Milk> data =
-            FXCollections.observableArrayList(
-                new Milk("903c", 4636, 20.02),
-                new Milk("Iadi24", 3534, 15.26),
-                new Milk("f235", 6324, 27.31),
-                new Milk("ir23", 4069, 17.57),
-                new Milk("fk245", 4592, 19.83)
-            );
+        TableView<AnnualMilk> table = new TableView<>();
         
         //build the farmID column
         TableColumn farmID = new TableColumn("FarmID");
@@ -113,7 +105,11 @@ public class AnnualReport extends Application {
         TextField year = new TextField();
         year.setMaxWidth(50);
         Button b = new Button("Confirm");
-        b.addEventHandler(ActionEvent.ACTION, (e) -> table.setItems(data));
+        // Handler
+        AnnualReportHandler handler = new AnnualReportHandler(b, table, year);
+        // register event handler for button
+        b.setOnAction(handler);
+        
         hbox.getChildren().addAll(prompt, year, b);
         
         //create a horizontal box for the orders
@@ -148,52 +144,8 @@ public class AnnualReport extends Application {
         stage.show();
     }
  
-    /**
-     * The Class Milk.
-     */
-    public static class Milk {
- 
-        /** The farm ID. */
-        private final SimpleStringProperty farmID;
-        
-        /** The weight. */
-        private final SimpleIntegerProperty weight;
-        
-        /** The percentage. */
-        private final SimpleDoubleProperty percentage;
- 
-		/**
-		 * Instantiates.
-		 *
-		 * @param farmID the farm ID
-		 * @param weight the weight
-		 * @param percentage the percentage
-		 */
-		private Milk(String farmID, Integer weight, Double percentage) {
-            this.farmID = new SimpleStringProperty(farmID);
-            this.weight = new SimpleIntegerProperty(weight);
-            this.percentage = new SimpleDoubleProperty(percentage);
-        }
- 
-        /**
-         * Gets the farm ID.
-         *
-         * @return the farm ID
-         */
-        public String getFarmID() {
-            return farmID.get();
-        }
- 
- 
-        /**
-         * Gets the weight.
-         *
-         * @return the weight
-         */
-        public Integer getWeight() {
-            return weight.get();
-        }
- 
+    
+}
         /**
          * Gets the percentage.
          *
