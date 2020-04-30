@@ -1,4 +1,4 @@
-
+package ateam;
 /** Main.java created by junxuanzhang on MacBook Air in ateam
  *  
  *  Author: 	Junxuan Zhang(jzhang2329@wisc.edu)
@@ -91,6 +91,10 @@ public class DateRangeReport extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public DateRangeReport(MilkData mData) {
+		this.milkData = mData;
 	}
 
 	@Override
