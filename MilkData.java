@@ -300,6 +300,26 @@ public class MilkData {
 		Collections.sort(list);
 		return list;
 	}
+	
+	/**
+	 * Get all the milk data in the given year
+	 * @param year
+	 * @return a list of this year's milk data
+	 */
+	public List<MilkItem> getDataByYear(String year){
+		List<MilkItem> list = new ArrayList<>();
+		for (Map.Entry<String, TreeMap<String, TreeMap<String, Integer>>> monthEntry : this.milkMap.entrySet()) {
+			
+			if (monthEntry.getKey().split("-", 2)[0].equals(year)) {
+				for (Map.Entry<String, TreeMap<String, Integer>> farmEntry: monthEntry.getValue().entrySet())
+					for (Map.Entry<String, Integer> dayEntry : farmEntry.getValue().entrySet()) {
+						list.add(new MilkItem(dayEntry.getKey(), farmEntry.getKey(), dayEntry.getValue()));
+					}
+			}
+		}
+		Collections.sort(list);
+		return list;
+	}
 
 	// TreeMap<month(year-month), TreeMap<farmID, TreeMap<date(year-month-day), milk
 	// weight>>>
