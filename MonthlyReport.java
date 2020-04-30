@@ -57,12 +57,23 @@ public class MonthlyReport extends Application {
 		launch(args);
 	}
 
+	/**
+	 * The private helper method for read from csv files
+	 *
+	 * @param year
+	 * @param month
+	 * @param map
+	 * @return
+	 */
 	private ObservableList<Milk> extract(TextField year, TextField month, MilkData map) {
-
-		
+//		try {
+//			int y = Integer.parseInt(year.getText()); // desired year
+//		} catch (IllegalArgumentException e) {
+//			Scene sc = new Scene(new Group());
+//
+//		}
 		int y = Integer.parseInt(year.getText()); // desired year
 		int mon = Integer.parseInt(month.getText()); // this is the desired month
-
 		ObservableList<Milk> oneMonthData = FXCollections.observableArrayList();
 		TreeMap<String, TreeMap<String, TreeMap<String, Integer>>> allMonth = map.getMilkMap();
 		String tag = y + "-" + mon;
@@ -92,7 +103,6 @@ public class MonthlyReport extends Application {
 		for (int l = 0; l < allID.size(); l++) {
 			oneMonthData.add(new Milk(allID.get(l), allWeight.get(l), percentage.get(l)));
 		}
-
 		return oneMonthData;
 	}
 
@@ -105,31 +115,26 @@ public class MonthlyReport extends Application {
 	public void start(Stage stage) throws IOException {
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Monthly Report");
-		stage.setWidth(550);
+		stage.setWidth(680);
 		stage.setHeight(600);
 		//create a label for title
 		Label title = new Label("Monthly Report");
 		title.setFont(new Font("Arial", 20));
 
 		MilkData map = new MilkData();
-		map.readMilkData("csv/large/");
+		map.readMilkData("csv/small/");
 
 		//create a table to show the monthly report
 		TableView<Milk> table = new TableView<>();
-//		ObservableList<Milk> data = FXCollections.observableArrayList(
-//						new Milk("0", 100, 10.0),
-//						new Milk("1", 260, 26.0),
-//						new Milk("2", 640, 64.0)
-//				);
 
 		//build the farmID column
 		TableColumn farmID = new TableColumn("FarmID");
-		farmID.setMinWidth(100);
+		farmID.setMinWidth(150);
 		farmID.setCellValueFactory(new PropertyValueFactory<>("farmID"));
 
 		//build the weight column
 		TableColumn weight = new TableColumn("Total Weight");
-		weight.setMinWidth(100);
+		weight.setMinWidth(150);
 		weight.setCellValueFactory(new PropertyValueFactory<>("weight"));
 
 		//build the percentage column
@@ -139,8 +144,8 @@ public class MonthlyReport extends Application {
 		table.getColumns().addAll(farmID, weight, percentage);
 
 		//create a horizontal box
-		HBox hbox0 = new HBox();
-		hbox0.setSpacing(10);
+		HBox hbox1 = new HBox();
+		hbox1.setSpacing(10);
 		Label prompt0 = new Label(("Year:"));
 		TextField year = new TextField();
 		HBox hbox = new HBox();
@@ -148,6 +153,7 @@ public class MonthlyReport extends Application {
 		Label prompt = new Label("Month:");
 		TextField month = new TextField();
 		Button c = new Button("Confirm");
+		Button ex = new Button("Export to file");
 
 		// display the report according to selected month
 		/*
@@ -180,7 +186,15 @@ public class MonthlyReport extends Application {
 		 */
 
 		c.addEventHandler(ActionEvent.ACTION, (e) -> table.setItems(extract(year, month, map)));
-		hbox.getChildren().addAll(prompt0, year, prompt, month, c);
+		ex.addEventHandler(ActionEvent.ACTION, (e) -> {
+			try {
+				map.writeMilkData();
+			} catch (IOException exc) {
+				System.out.println("Error when export as file!");
+			}
+		});
+		hbox.getChildren().addAll(prompt0, year, prompt, month, c, ex);
+		//hbox1.getChildren().addAll(c, ex);
 
 		//create a horizontal box for the orders
 		HBox hbox2 = new HBox();
@@ -199,8 +213,6 @@ public class MonthlyReport extends Application {
 					table.getSortOrder().add(weight);
 					table.sort();});
 		hbox2.getChildren().addAll(order1, order2);
-
-
 
 		//create a vbox to contain all the elements
 		VBox vbox = new VBox();
