@@ -43,7 +43,7 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
   
 
   private ObservableList<FarmReport.Milk> tableitems =
-      FXCollections.observableArrayList(new FarmReport.Milk();
+      FXCollections.observableArrayList();
 
 
   /**
@@ -63,6 +63,7 @@ public class FarmReportHandler implements javafx.event.EventHandler<ActionEvent>
   public void handle(ActionEvent arg0) {
     // TODO Auto-generated method stub
     // retrieve data
+    EventLog.getInstance().log("FarmReport Generated");
     String farmid = id.getText().toString();
     String farmyear = year.getText().toString();
 

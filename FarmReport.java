@@ -16,6 +16,7 @@
  * @author Bo
  *
  */
+import java.io.IOException;
 import java.util.List;
 
 import javafx.application.Application;
@@ -90,16 +91,26 @@ public class FarmReport extends Application {
 
 
     Button confirm = new Button("Confirm");
+    Button ex = new Button("Export to file");
 
     // Handler
     FarmReportHandler handler = new FarmReportHandler(milkData, vbox, farmid, year);
+
+    ex.addEventHandler(ActionEvent.ACTION, (e) -> {
+      try {
+        milkData.writeMilkData();
+        EventLog.getInstance().log("File exported");
+      } catch (IOException exc) {
+        System.out.println("Error when export as file!");
+      }
+    });
 
     // register event handler for button
     confirm.setOnAction(handler);
 
     // add to hbox
-    hbox1.getChildren().addAll(prompt1, farmid);
-    hbox2.getChildren().addAll(prompt2, year, confirm);
+    hbox1.getChildren().addAll(prompt1, farmid,confirm);
+    hbox2.getChildren().addAll(prompt2, year, ex);
 
 
     vbox.setPadding(new Insets(10, 0, 0, 10));
