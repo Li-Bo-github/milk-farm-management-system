@@ -1,5 +1,5 @@
 /**
- * DataRangeItem.java created by wenxiyang on MacBook Pro in a2_1
+ * DataRangeItem.java created by wenxiyang on MacBook Pro in a2
  *
  * Author:		Wenxi Yang(wyang235@wisc.edu)
  * Date: 		@date
@@ -62,4 +62,11 @@ public class DataRangeItem extends MilkItem{
 		this.percent = percent;
 	}
 	
+  public static String getTitles() {
+    return "farmID, weight, percentage";
+  }
+  
+  public String getValueString() {
+    return this.getFarmID() + "," + this.getWeight() + "," + percent;
+  }
 }

@@ -81,6 +81,14 @@ import javafx.beans.property.SimpleStringProperty;
         public Double getPercentage() {
             return percentage.get();
         }
+        
+        public static String getTitles() {
+          return "farmID, weight, percentage";
+        }
+        
+        public String getValueString() {
+          return farmID.getValue() + "," + weight.getValue() + "," +percentage.getValue();
+        }
  
     }
     

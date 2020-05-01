@@ -104,7 +104,7 @@ public class UserFunctionPane {
 							e.printStackTrace();
 						}
 					} else if (selectedRadioButton.equals(rbtAnnualRpt)) {
-						AnnualReport annualR = new AnnualReport();
+						AnnualReport annualR = new AnnualReport(milkData);
 						Stage d2Stage = new Stage();
 						annualR.start(d2Stage);
 						System.out.println("call Annual Report");

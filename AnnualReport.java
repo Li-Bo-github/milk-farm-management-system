@@ -25,19 +25,20 @@
  */
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javafx.application.Application;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -124,7 +125,16 @@ public class AnnualReport extends Application {
         TextField year = new TextField();
         year.setMaxWidth(50);
         Button b = new Button("Confirm");
-        hbox.getChildren().addAll(prompt, year, b);
+        
+        Button bt_export = new Button("Export");
+        bt_export.setOnAction(action -> {
+          String rpName = export2File(table);
+          String temp = "export to " + rpName;
+          new Alert(Alert.AlertType.NONE, temp, new ButtonType[] { ButtonType.CLOSE }).show();
+          EventLog.getInstance().log(temp);
+        });
+        
+        hbox.getChildren().addAll(prompt, year, b, bt_export);
         
         // Handler
         AnnualReportHandler handler = new AnnualReportHandler(b, table, year, data);
@@ -163,5 +173,36 @@ public class AnnualReport extends Application {
         stage.show();
     }
  
-    
+    private String export2File(TableView<AnnualMilk> table) {
+      String rpName = "AnnualReport_" + CommonMilkTool.formatDate(LocalDate.now()) + ".txt";
+      FileOutputStream fos = null;
+      try {
+        fos = new FileOutputStream(new File(rpName), false);
+        try {
+          fos.write(AnnualMilk.getTitles().getBytes("UTF-8"));
+          fos.write("\n".getBytes("UTF-8"));
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        for(AnnualMilk item : table.getItems()) {
+          try {
+            fos.write(item.getValueString().getBytes("UTF-8"));
+            fos.write("\n".getBytes("UTF-8"));
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      }finally {
+        if(fos != null) {
+          try {
+            fos.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+      return rpName;
+    }
 } 
